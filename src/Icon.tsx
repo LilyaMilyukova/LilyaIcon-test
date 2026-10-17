@@ -25,7 +25,10 @@ export const iconVariants = tv({
   },
 });
 
-export type IconName = keyof typeof LucideIcons;
+export type IconName = {
+    [K in keyof typeof LucideIcons]:
+      (typeof LucideIcons)[K] extends LucideIcons.LucideIcon ? K : never;
+  }[keyof typeof LucideIcons];
 
 export interface IconProps extends VariantProps<typeof iconVariants> {
   name: IconName;
