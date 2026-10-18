@@ -1,8 +1,7 @@
-import * as React from 'react';
 import * as LucideIcons from 'lucide-react';
 import { tv, type VariantProps } from 'tailwind-variants';
 
-export const iconVariants = tv({
+const iconVariants = tv({
   base: 'shrink-0 transition-colors',
   variants: {
     size: {
@@ -26,9 +25,10 @@ export const iconVariants = tv({
 });
 
 export type IconName = {
-    [K in keyof typeof LucideIcons]:
-      (typeof LucideIcons)[K] extends LucideIcons.LucideIcon ? K : never;
-  }[keyof typeof LucideIcons];
+  [K in keyof typeof LucideIcons]: (typeof LucideIcons)[K] extends LucideIcons.LucideIcon
+    ? K
+    : never;
+}[keyof typeof LucideIcons];
 
 export interface IconProps extends VariantProps<typeof iconVariants> {
   name: IconName;
@@ -37,29 +37,18 @@ export interface IconProps extends VariantProps<typeof iconVariants> {
   customSize?: number;
 }
 
-export const Icon = ({
-  name,
-  size,
-  color,
-  className,
-  strokeWidth = 2,
-  customSize,
-}: IconProps) => {
-  const IconComponent = LucideIcons[name] as LucideIcons.LucideIcon;
+export const Icon = ({ name, size = 'sm', color, className, strokeWidth, customSize }: IconProps) => {
+  const IconComponent = LucideIcons[name];
 
   return (
     <IconComponent
+      size={customSize}
+      strokeWidth={strokeWidth}
       className={iconVariants({
-        size: customSize !== undefined ? undefined : (size ?? 'sm'),
+        size: customSize === undefined ? size : undefined,
         color,
         className,
       })}
-      style={
-        customSize !== undefined
-          ? { width: customSize, height: customSize }
-          : undefined
-      }
-      strokeWidth={strokeWidth}
     />
   );
 };
